@@ -1,0 +1,3 @@
+.global snake:
+
+snake:
