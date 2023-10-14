@@ -1,5 +1,20 @@
 .global draw_board
 
+/*
+ * cell index
+ *
+ * ---------------------------
+ * | 00 | 01 | 02 | ... | 23 |
+ * ---------------------------
+ * | 24 | 25 | 26 | ... | 47 |
+ * ---------------------------
+ * .
+ * .
+ * ---------------------------
+ * |553 |554 |555 | ... |576 |
+ * ---------------------------
+ */
+
 .equ BOARD_WIDTH, 24	// 12 cells (38 pixels * 38 pixels)
 .equ BOARD_HEIGHT, 24
 .equ CELL_WIDTH_HEIGHT, 19
@@ -12,7 +27,7 @@
 
 .equ DARK_BLUE, 0x01AB
 .equ PURPLE1, 0x398A
-.equ PURPLE2, 0x2928
+.equ PURPLE2, 0x39AB
 
 draw_board:
     mov x29, x30                            // save return address 

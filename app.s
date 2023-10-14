@@ -1,23 +1,8 @@
 .globl app
 
-.equ SNAKE_MAX_LEN, 15
-.equ SNAKE_MIN_LEN, 2
+
 .equ BOARD_OUT_RANGE, 145 // (BOARD_HEIGHT * BOARD_WIDTH) +1 
 
-/*
- * cell index
- *
- * ---------------------------
- * | 00 | 01 | 02 | ... | 11 |
- * ---------------------------
- * | 12 | 13 | 14 | ... | 23 |
- * ---------------------------
- * .
- * .
- * ---------------------------
- * |132 |133 |134 | ... |143 |
- * ---------------------------
- */
 
 app:
 	//---------------- Inicialización GPIO --------------------
@@ -30,11 +15,11 @@ app:
 	
 	//---------------- Main code --------------------
 	// X0 contiene la dirección base del framebuffer (NO MODIFICAR)
-	
-		
-	add x10, x0, 0		// X10 contiene la dirección base del framebuffer
-	
+
 	bl draw_board
+	
+	bl draw_snake_start
+
 
 
 InfLoop:
