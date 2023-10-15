@@ -6,7 +6,7 @@
 // height   x4
 // widht    x5
 
-// x8, x9, x10, x11, x12
+// uses x8, x9, x10, x11, x12
 rectangle:
     mov x12, x2
     mov x8, 512
@@ -22,7 +22,7 @@ rectangle:
             sturh w3, [x9]	   	// Setear el color del pixel N
             add x9, x9, 2	   	    // Siguiente pixel
             sub x11, x11, 1	   	// Decrementar el contador X
-        cbnz x11,inner_loop	   	    // Si no terminó la fila, saltar    
+        cbnz x11, inner_loop	   	    // Si no terminó la fila, saltar    
         
         add x12, x12, 1             // siguiente fila
         madd x9, x12, x8, x1        // x9 = (y * 512) + x
