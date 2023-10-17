@@ -28,7 +28,7 @@ app:
 
 InfLoop:
 
-	bl draw_board
+	//bl draw_board
 
 	bl inputRead
 	
