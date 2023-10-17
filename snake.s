@@ -123,8 +123,8 @@ slither_snake:
 
     ret
 
-//  1 al 5 params rectangle
-// 8 al 12 usa rectangle
+
+
 draw_snake:
 
     mov x29, x30                            // save return address 
@@ -132,7 +132,6 @@ draw_snake:
     mov x6, SNAKE_HEAD_ADDRESS        
     mov x7, SNAKE_SIZE_ADDRESS
     ldur x7, [x7]                           // x7 = snake size
-    //sub x7, x7, 1                           // x7 = snake size - 1
     
     //mov w3, GREEN                         // color    w3
     mov w3, 0xF821

@@ -28,8 +28,6 @@ app:
 
 InfLoop:
 
-	//bl draw_board
-
 	//bl inputRead
 	
 	//bl update_position
