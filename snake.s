@@ -34,7 +34,6 @@ draw_snake_start:
 
     mov x1, START_X                             // xpixel   x1
     stur x1, [x6, X_COORD]                      // save x_head
-
     mov x2, START_Y                             // ypixel   x2
     stur x2, [x6, Y_COORD]                      // save y_head
 
@@ -46,7 +45,7 @@ draw_snake_start:
     add x6, x6, NEXT_SEGMENT                    // segment 1
     stur x1, [x6, X_COORD]                      // save x_segment1
     add x2, x2, SEGMENT_HEIGHT_WIDTH
-    stur x1, [x6, Y_COORD]                      // save y_segment1
+    stur x2, [x6, Y_COORD]                      // save y_segment1
     bl rectangle                                // draw first segment
 
     br x29
@@ -133,31 +132,26 @@ draw_snake:
     mov x6, SNAKE_HEAD_ADDRESS        
     mov x7, SNAKE_SIZE_ADDRESS
     ldur x7, [x7]                           // x7 = snake size
-    sub x7, x7, 1                           // x7 = snake size - 1
-    mov x14, NEXT_SEGMENT
+    //sub x7, x7, 1                           // x7 = snake size - 1
     
-    //mov w3, GREEN                               // color    w3
+    //mov w3, GREEN                         // color    w3
     mov w3, 0xF821
-    mov x4, SEGMENT_HEIGHT_WIDTH                // height   x4
-    mov x5, SEGMENT_HEIGHT_WIDTH                // widht    x5
+    mov x4, SEGMENT_HEIGHT_WIDTH            // height   x4
+    mov x5, SEGMENT_HEIGHT_WIDTH            // widht    x5
 
-    madd x13, x7, x14, x6          // x13 = x7 * x14 + x6 -> x12 = segment[i-1] address (last segment)
+    mov x13, 0                              // i
 
     drawing_loop:
 
-        ldur x1, [x13, X_COORD]     // x1 = x_segment[i]
-        ldur x2, [x13, Y_COORD]     // x2 = y_segment[i]
-        bl rectangle                // draw segment[i]
+        ldur x1, [x6, X_COORD]     // x1 = x_segment[i]
+        ldur x2, [x6, Y_COORD]     // x2 = y_segment[i]
+        bl rectangle               // draw segment[i]
         
-        sub x13, x13, NEXT_SEGMENT    // previous segment
-        sub x7, x7, 1
-        cbnz x7, drawing_loop
-    
-    ldur x1, [x13, X_COORD]     // x1 = x_head
-    ldur x2, [x13, Y_COORD]     // x2 = y_head
-    mov w3, 0x02FF
-    bl rectangle                // draw head
-
+        add x6, x6, NEXT_SEGMENT   // next segment address
+        add x13, x13, 1
+        sub x14, x13, x7           // x14 = i - (snakesize -1)
+        cbnz x14, drawing_loop          // keep looping
 
     br x29
+
 
