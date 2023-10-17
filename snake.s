@@ -1,6 +1,7 @@
 .global draw_snake_start
 .global update_position
 .global draw_snake
+.global slither_snake
 
 .equ SNAKE_MAX_LEN, 15
 .equ SNAKE_MIN_LEN, 2
@@ -22,8 +23,12 @@
 
 // pixelx head x1
 // pixely head x2
-
 draw_snake_start:
+
+    mov x7, SNAKE_MIN_LEN
+    mov x8, SNAKE_SIZE_ADDRESS
+    stur x7, [x8]                           // x7 = 2 snake size
+
     mov x29, x30                            // save return address 
     mov x6, SNAKE_HEAD_ADDRESS                
 
@@ -52,59 +57,66 @@ draw_snake_start:
 .equ DOWN_ARROW, 0x20000
 .equ LEFT_ARROW, 0x60000
 
-// called after inputRead: pressed arrow in x22
-
+// pressed arrow x22
 update_position:
 
     mov x6, SNAKE_HEAD_ADDRESS
-    mov x8, SNAKE_SIZE_ADDRESS
-    ldur x9, [x8]                       // x9 = snake size
 
     control_up:
         cmp x22, UP_ARROW
         b.ne control_right
-        update_up:
-            ldur x10, [x6, Y_COORD]      // x10 = y_segment[i]
-            sub x10, x10, SLITHER        // move up, sub in y axis
-            stur x10, [x6, Y_COORD]      // save updated position
-            add x6, x6, NEXT_SEGMENT
-            sub x9, x9, 1
-            cbnz x9, update_up
+        ldur x11, [x6, Y_COORD]      // x11 = y_head
+        ldur x10, [x6, X_COORD]      // x10 = x_head
+        sub x11, x11, SLITHER        // move up, sub in y axis -> x11 = next y_head
 
     control_right:
         cmp x22, RIGHT_ARROW
         b.ne control_down
-        update_right:
-            ldur x10, [x6, X_COORD]      // x10 = x_segment[i]
-            add x10, x10, SLITHER        // move right, add in x axis
-            stur x10, [x6, X_COORD]      // save updated position
-            add x6, x6, NEXT_SEGMENT
-            sub x9, x9, 1
-            cbnz x9, update_right
+        ldur x10, [x6, X_COORD]      // x10 = x_head
+        ldur x11, [x6, Y_COORD]      // x11 = y_head
+        add x10, x10, SLITHER        // move right, add in x axis -> x10 = next x_head
 
     control_down:
         cmp x22, DOWN_ARROW
         b.ne control_left
-        update_down:
-            ldur x10, [x6, Y_COORD]      // x10 = y_segment[i]
-            add x10, x10, SLITHER        // move up, add in y axis
-            stur x10, [x6, Y_COORD]      // save updated position
-            add x6, x6, NEXT_SEGMENT
-            sub x9, x9, 1
-            cbnz x9, update_down
+        ldur x11, [x6, Y_COORD]      // x11 = y_head
+        ldur x10, [x6, X_COORD]      // x10 = x_head
+        add x11, x11, SLITHER        // move up, add in y axis -> x11 = next y_head
 
     control_left:
         cmp x22, LEFT_ARROW
-        b.ne update_done 
-        update_left:
-            ldur x10, [x6, X_COORD]      // x10 = x_segment[i]
-            sub x10, x10, SLITHER        // move left, sub in x axis
-            stur x10, [x6, X_COORD]      // save updated position
-            add x6, x6, NEXT_SEGMENT
-            sub x9, x9, 1
-            cbnz x9, update_left
+        b.ne slither_snake
+        ldur x10, [x6, X_COORD]      // x10 = x_head
+        ldur x11, [x6, Y_COORD]      // x11 = y_head
+        sub x10, x10, SLITHER        // move left, sub in x axis -> x10 = next x_head
+
+    ret
     
-    update_done:
+
+slither_snake:
+
+    mov x6, SNAKE_HEAD_ADDRESS
+    mov x8, SNAKE_SIZE_ADDRESS
+    ldur x9, [x8]                       // x9 = snake size -> i
+    sub x9, x9, 1                       // x9 = snake size - 1 -> to compare with 0, not 1
+    sub x12, x9, 1                      // x12 = i - 2
+    mov x13, NEXT_SEGMENT
+
+    slither_loop:
+                                        // get segment[i-1] coordinates
+        madd x14, x12, x13, x6          // x14 = x12 * x13 + x6 -> x14 = segment[i] address
+        ldur x13, [x14, X_COORD]        // x13 = x_segment[i-1]
+        ldur x15, [x14, Y_COORD]        // x15 = y_segment[i-1]
+
+                                        // segment[i] = segment[i-1]
+        madd x2, x9, x13, x6            // x2 = x9 * x13 + x6
+        stur x13, [, X_COORD]
+        stur x15, [, Y_COORD]
+
+        cmp x9, 1
+        b.ne
+
+
     ret
 
 

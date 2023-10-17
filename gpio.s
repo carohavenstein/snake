@@ -4,7 +4,7 @@
 // GPIO14: up arrow 0x2000
 // GPIO15: right arrow 0x4000
 // GPIO17: down arrow 0x20000
-// GPIO18: left arrow 0x60000
+// GPIO18: left arrow 0x60000 // o 40000??
 
 inputRead: 	
 	ldr w22, [x20, GPIO_GPLEV0] 	// Leo el registro GPIO Pin Level 0 y lo guardo en X22
