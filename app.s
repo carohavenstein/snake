@@ -29,12 +29,17 @@ app:
 InfLoop:
 
 	bl inputRead
-	
 	bl update_position
-
-	bl slither_snake
+	//bl slither_snake
 	
 	bl draw_snake
+
+	// --- Delay loop ---
+	movz x11, 0x10, lsl #16
+	delay1: 
+	sub x11,x11,#1
+	cbnz x11, delay1
+	// ------------------
 
 	//bl check_crash
 

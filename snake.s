@@ -17,7 +17,7 @@
 .equ Y_COORD, 8
 .equ NEXT_SEGMENT, 16
 
-.equ SLITHER, 2     // slither 2 pixels
+.equ SLITHER, 6     // slither 2 pixels
 
 .equ GREEN, 0x2143
 
@@ -51,43 +51,43 @@ draw_snake_start:
     br x29
 
 
-.equ UP_ARROW, 0x2000
-.equ RIGHT_ARROW, 0x4000
+
+.equ UP_ARROW, 0x4000
+.equ RIGHT_ARROW, 0x8000
 .equ DOWN_ARROW, 0x20000
-.equ LEFT_ARROW, 0x60000
+.equ LEFT_ARROW, 0x40000
 
 // pressed arrow x22
 update_position:
 
     mov x6, SNAKE_HEAD_ADDRESS
+    ldur x10, [x6, X_COORD]             // x10 = x_head
+    ldur x11, [x6, Y_COORD]             // x11 = y_head
 
     control_up:
         cmp x22, UP_ARROW
         b.ne control_right
-        ldur x10, [x6, X_COORD]      // x10 = x_head
-        ldur x11, [x6, Y_COORD]      // x11 = y_head
         sub x11, x11, SLITHER        // move up, sub in y axis -> x11 = next y_head
 
     control_right:
         cmp x22, RIGHT_ARROW
         b.ne control_down
-        ldur x10, [x6, X_COORD]      // x10 = x_head
-        ldur x11, [x6, Y_COORD]      // x11 = y_head
         add x10, x10, SLITHER        // move right, add in x axis -> x10 = next x_head
 
     control_down:
         cmp x22, DOWN_ARROW
         b.ne control_left
-        ldur x10, [x6, X_COORD]      // x10 = x_head
-        ldur x11, [x6, Y_COORD]      // x11 = y_head
         add x11, x11, SLITHER        // move up, add in y axis -> x11 = next y_head
 
     control_left:
         cmp x22, LEFT_ARROW
-        b.ne slither_snake
-        ldur x10, [x6, X_COORD]      // x10 = x_head
-        ldur x11, [x6, Y_COORD]      // x11 = y_head
+        b.ne update_done
         sub x10, x10, SLITHER        // move left, sub in x axis -> x10 = next x_head
+
+    update_done:
+
+    stur x10, [x6, X_COORD]             // x_head = x10
+    stur x11, [x6, Y_COORD]             // y_head = x11
 
     ret
     
