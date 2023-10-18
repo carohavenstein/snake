@@ -58,7 +58,7 @@ draw_board:
 	mov x4, TOP_BOTTOM_FRAME_HEIGHT			// height
 	mov x5, TOP_BOTTOM_FRAME_WIDTH			// width
 	bl rectangle
-
+											// board center
 	mov x1, LATERAL_FRAMES_WIDTH			// xpixel
 	mov x2, TOP_BOTTOM_FRAME_HEIGHT			// ypixel
 	mov w3, PURPLE							// color

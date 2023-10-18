@@ -28,11 +28,11 @@ app:
 
 InfLoop:
 
-	//bl inputRead
+	bl inputRead
 	
-	//bl update_position
+	bl update_position
 
-	//bl slither_snake
+	bl slither_snake
 	
 	bl draw_snake
 
