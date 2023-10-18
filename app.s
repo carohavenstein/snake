@@ -1,8 +1,6 @@
 .globl app
 
 
-.equ BOARD_OUT_RANGE, 145 // (BOARD_HEIGHT * BOARD_WIDTH) +1 
-
 app:
 	//---------------- Inicialización GPIO --------------------
 
@@ -10,11 +8,6 @@ app:
 	// GPIO3: red led
 
 	mov w20, PERIPHERAL_BASE + GPIO_BASE     // Dirección de los GPIO.		
-	
-	// GPIO14: up arrow
-	// GPIO17: down arrow
-	// GPIO15: right arrow
-	// GPIO18: left arrow
 
 	// Configurar GPIO 17 como input:
 	mov X21, 0
@@ -30,7 +23,8 @@ InfLoop:
 
 	bl inputRead
 	bl update_position
-	//bl slither_snake
+	
+	bl slither_snake
 	
 	bl draw_snake
 
@@ -41,9 +35,6 @@ InfLoop:
 	cbnz x11, delay1
 	// ------------------
 
-	//bl check_crash
-
-	// bl draw_food
 
 	b InfLoop
 	

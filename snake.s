@@ -3,21 +3,25 @@
 .global draw_snake
 .global slither_snake
 
-.equ SNAKE_MAX_LEN, 15
+.equ SNAKE_MAX_LEN, 17
 .equ SNAKE_START_LEN, 2
 .equ SEGMENT_HEIGHT_WIDTH, 19
 
 .equ START_X, 256
 .equ START_Y, 256
 
-// x_head, y_head, x_segment1, y_segment1, x_segment2, y_segment2, ... , x_segment14, y_segment14 
+// to store coordinate of top left pixel of each segment
+// x_head, y_head, x_segment1, y_segment1, x_segment2, y_segment2, ... , x_segment16, y_segment16 
 .equ SNAKE_HEAD_ADDRESS, 0x40000
 .equ SNAKE_SIZE_ADDRESS, 0x80000
+
+.equ SNAKE_NEXT_POS_ADDRESS, 0x160000 
+
 .equ X_COORD, 0
 .equ Y_COORD, 8
 .equ NEXT_SEGMENT, 16
 
-.equ SLITHER, 6     // slither 2 pixels
+.equ SLITHER, 6
 
 .equ GREEN, 0x2143
 
@@ -60,6 +64,8 @@ draw_snake_start:
 // pressed arrow x22
 update_position:
 
+    mov x29, x30                            // save return address
+
     mov x6, SNAKE_HEAD_ADDRESS
     ldur x10, [x6, X_COORD]             // x10 = x_head
     ldur x11, [x6, Y_COORD]             // x11 = y_head
@@ -68,6 +74,7 @@ update_position:
         cmp x22, UP_ARROW
         b.ne control_right
         sub x11, x11, SLITHER        // move up, sub in y axis -> x11 = next y_head
+        //bl check_crash_down
 
     control_right:
         cmp x22, RIGHT_ARROW
@@ -86,15 +93,20 @@ update_position:
 
     update_done:
 
-    stur x10, [x6, X_COORD]             // x_head = x10
-    stur x11, [x6, Y_COORD]             // y_head = x11
+    mov x6, SNAKE_NEXT_POS_ADDRESS
+    stur x10, [x6, X_COORD]             // store next_x_head
+    stur x11, [x6, Y_COORD]             // store next_y_head
 
-    ret
+
+    br x29
     
 
-// x10 = x_head
-// x11 = y_head
+
 slither_snake:
+
+    mov x6, SNAKE_NEXT_POS_ADDRESS
+    ldur x10, [x6, X_COORD]             // x10 = next_x_head
+    ldur x11, [x6, Y_COORD]             // x11 = next_y_head
 
     mov x6, SNAKE_HEAD_ADDRESS
     //mov x8, SNAKE_SIZE_ADDRESS
@@ -133,8 +145,8 @@ draw_snake:
     mov x7, SNAKE_SIZE_ADDRESS
     ldur x7, [x7]                           // x7 = snake size
     
-    mov w3, GREEN                           // color    w3
-    // mov w3, 0xF821
+    //mov w3, GREEN                           // color    w3
+    mov w3, 0xF821
     mov x4, SEGMENT_HEIGHT_WIDTH            // height   x4
     mov x5, SEGMENT_HEIGHT_WIDTH            // widht    x5
 
@@ -148,7 +160,7 @@ draw_snake:
         
         add x6, x6, NEXT_SEGMENT   // next segment address
         add x13, x13, 1
-        sub x14, x13, x7           // x14 = i - (snakesize -1)
+        sub x14, x13, x7           // x14 = i - (snakesize - 1)
         cbnz x14, drawing_loop          // keep looping
 
     br x29
