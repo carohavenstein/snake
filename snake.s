@@ -108,27 +108,31 @@ slither_snake:
     ldur x10, [x6, X_COORD]             // x10 = next_x_head
     ldur x11, [x6, Y_COORD]             // x11 = next_y_head
 
+    mov x8, SNAKE_SIZE_ADDRESS
+    ldur x8, [x8]                      // x8 = snake size
+    sub x8, x8, 1                      // i = x8 = snake size - 1
+    sub x9, x8, 1                      // x9 = i - 1
+    
+    // get coordinates last segment, paint it purple bl rectangle
+    mov x12, NEXT_SEGMENT
     mov x6, SNAKE_HEAD_ADDRESS
-    //mov x8, SNAKE_SIZE_ADDRESS
-    //ldur x9, [x8]                       // x9 = snake size
-    //sub x9, x9, 1                       // i = x9 = snake size - 1
-    //sub x12, x9, 1                      // x12 = i - 1
-    //mov x13, NEXT_SEGMENT
+    madd x13, x9, x12, x6           // x13 = (i-1)*16 + x6 -> x13 = segment[i-1] address
+    madd x14, x8, x12, x6           // x14 = x9 * x13 + x6 -> x14 = segment[i] address
 
-    //slither_loop:
+    slither_loop:
                                         // get segment[i-1] coordinates
-        //madd x14, x12, x13, x6          // x14 = x12 * x13 + x6 -> x14 = segment[i-1] address
-        //ldur x13, [x14, X_COORD]        // x13 = x_segment[i-1]
-        //ldur x15, [x14, Y_COORD]        // x15 = y_segment[i-1]
-        //sub x12, x12, 1                 // i - 1 --
+        ldur x1, [x13, X_COORD]         // x1 = x_segment[i-1]
+        ldur x2, [x13, Y_COORD]         // x2 = y_segment[i-1]
+        sub x13, x13, NEXT_SEGMENT      // [i-1]address --
+        sub x9, x9, 1                   // (i-1) --
 
                                         // segment[i] = segment[i-1]
-        //madd x14, x9, x13, x6           // x14 = x9 * x13 + x6 -> x14 = segment[i] address
-        //stur x13, [x14, X_COORD]        // x_segment[i] = x_segment[i-1]
-        //stur x15, [x14, Y_COORD]        // y_segment[i] = y_segment[i-1]
-
-        //sub x9, x9, 1                   // i --
-        //cbnz x9, slither_loop
+        stur x1, [x14, X_COORD]         // x_segment[i] = x_segment[i-1]
+        stur x2, [x14, Y_COORD]         // y_segment[i] = y_segment[i-1]
+        sub x14, x14, NEXT_SEGMENT      // [i] address
+        sub x8, x8, 1                   // i --
+        
+        cbnz x8, slither_loop
     
     stur x10, [x6, X_COORD]             // x_head = x10
     stur x11, [x6, Y_COORD]             // y_head = x11
