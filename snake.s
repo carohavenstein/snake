@@ -15,15 +15,16 @@
 .equ SNAKE_HEAD_ADDRESS, 0x40000
 .equ SNAKE_SIZE_ADDRESS, 0x80000
 
-.equ SNAKE_NEXT_POS_ADDRESS, 0x160000 
+.equ SNAKE_NEXT_POS_ADDRESS, 0x200000
 
 .equ X_COORD, 0
 .equ Y_COORD, 8
 .equ NEXT_SEGMENT, 16
 
-.equ SLITHER, 6
+.equ SLITHER, 19
 
 .equ GREEN, 0x2143
+.equ PURPLE, 0x398A
 
 // pixelx head x1
 // pixely head x2
@@ -104,6 +105,22 @@ update_position:
 
 slither_snake:
 
+    mov x29, x30                            // save return address
+
+    mov x8, SNAKE_SIZE_ADDRESS
+    ldur x8, [x8]                      // x8 = snake size
+    sub x9, x8, 1                      // x9 = snake size - 1
+    mov x12, NEXT_SEGMENT
+    mov x6, SNAKE_HEAD_ADDRESS
+    madd x13, x9, x12, x6           // x13 = segment[i-1] address (last segment)
+
+    ldur x1, [x13, X_COORD]         // xpixel   x1
+    ldur x2, [x13, Y_COORD]         // ypixel   x2
+    mov w3, PURPLE                  // color    w3
+    mov x4, SEGMENT_HEIGHT_WIDTH    // height   x4
+    mov x5, SEGMENT_HEIGHT_WIDTH    // widht    x5
+    bl rectangle                    // cover last segment in purple
+
     mov x6, SNAKE_NEXT_POS_ADDRESS
     ldur x10, [x6, X_COORD]             // x10 = next_x_head
     ldur x11, [x6, Y_COORD]             // x11 = next_y_head
@@ -113,23 +130,21 @@ slither_snake:
     sub x8, x8, 1                      // i = x8 = snake size - 1
     sub x9, x8, 1                      // x9 = i - 1
     
-    // get coordinates last segment, paint it purple bl rectangle
     mov x12, NEXT_SEGMENT
     mov x6, SNAKE_HEAD_ADDRESS
-    madd x13, x9, x12, x6           // x13 = (i-1)*16 + x6 -> x13 = segment[i-1] address
-    madd x14, x8, x12, x6           // x14 = x9 * x13 + x6 -> x14 = segment[i] address
+    madd x13, x9, x12, x6           // x13 = segment[i-1] address (last segment)
+    madd x14, x8, x12, x6           // x14 = segment[i] address
 
     slither_loop:
-                                        // get segment[i-1] coordinates
+                                        
         ldur x1, [x13, X_COORD]         // x1 = x_segment[i-1]
         ldur x2, [x13, Y_COORD]         // x2 = y_segment[i-1]
         sub x13, x13, NEXT_SEGMENT      // [i-1]address --
         sub x9, x9, 1                   // (i-1) --
 
-                                        // segment[i] = segment[i-1]
         stur x1, [x14, X_COORD]         // x_segment[i] = x_segment[i-1]
         stur x2, [x14, Y_COORD]         // y_segment[i] = y_segment[i-1]
-        sub x14, x14, NEXT_SEGMENT      // [i] address
+        sub x14, x14, NEXT_SEGMENT      // [i] address --
         sub x8, x8, 1                   // i --
         
         cbnz x8, slither_loop
@@ -137,7 +152,7 @@ slither_snake:
     stur x10, [x6, X_COORD]             // x_head = x10
     stur x11, [x6, Y_COORD]             // y_head = x11
 
-    ret
+    br x29
 
 
 
@@ -149,8 +164,8 @@ draw_snake:
     mov x7, SNAKE_SIZE_ADDRESS
     ldur x7, [x7]                           // x7 = snake size
     
-    //mov w3, GREEN                           // color    w3
-    mov w3, 0xF821
+    mov w3, GREEN                           // color    w3
+    //mov w3, 0xF821
     mov x4, SEGMENT_HEIGHT_WIDTH            // height   x4
     mov x5, SEGMENT_HEIGHT_WIDTH            // widht    x5
 
