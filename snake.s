@@ -67,6 +67,9 @@ update_position:
     ldur x10, [x6, X_COORD]             // x10 = x_head
     ldur x11, [x6, Y_COORD]             // x11 = y_head
 
+    mov x1, LAST_PRESSED_ADDRESS
+    ldur x22, [x1]                    // x22 = last pressed key
+
     control_up:
         cmp x22, UP_ARROW
         b.ne control_right
