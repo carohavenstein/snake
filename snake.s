@@ -14,17 +14,13 @@
 // x_head, y_head, x_segment1, y_segment1, x_segment2, y_segment2, ... , x_segment16, y_segment16 
 .equ SNAKE_HEAD_ADDRESS, 0x40000
 .equ SNAKE_SIZE_ADDRESS, 0x80000
-
+.equ NEXT_SEGMENT, 16
 .equ SNAKE_NEXT_POS_ADDRESS, 0x200000
 
 .equ X_COORD, 0
 .equ Y_COORD, 8
-.equ NEXT_SEGMENT, 16
-
 .equ SLITHER, 19
-
 .equ GREEN, 0x2143
-.equ PURPLE, 0x398A
 
 // pixelx head x1
 // pixely head x2
