@@ -22,11 +22,17 @@ app:
 InfLoop:
 
 	bl inputRead
+	
 	bl update_position
 	
 	bl slither_snake
 	
 	bl draw_snake
+
+	mov x1, 250
+	mov x2, 50
+	bl draw_food
+
 
 	// --- Delay loop ---
 	movz x11, 0x10, lsl #16

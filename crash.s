@@ -4,18 +4,6 @@
 .global check_crash_left
 
 
-.equ SNAKE_NEXT_POS_ADDRESS, 0x160000 
-
-.equ X_COORD, 0
-.equ Y_COORD, 8
-
-.equ SEGMENT_HEIGHT_WIDTH, 19
-
-.equ GREEN, 0x2143
-.equ DARK_BLUE, 0x01AB
-.equ PURPLE, 0x398A
-.equ ORANGE, 0xFB80
-
 check_crash_down:
 
     mov x6, SNAKE_NEXT_POS_ADDRESS
