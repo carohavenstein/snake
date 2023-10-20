@@ -1,13 +1,30 @@
 .global draw_food
+.global triangle
 
 .equ ORANGE, 0xFB80
+
+// food[30] = { x_food1, y_food1, x_food2, y_food2, ... , x_food14, y_food14 }
+.equ FIRST_FOOD_ADDRESS, 0x300000
+.equ ACTUAL_FOOD_ADDRESS, 0x
+.NEXT_FOOD, 16
+
+draw_food:
+    mov x29, x30                // save return address
+
+    mov x3, ACTUAL_FOOD_ADDRESS
+    ldur x1, [x3, X_COORD]          // get actual_food coordinates
+    ldur x2, [x3, Y_COORD]
+    bl triangle
+
+    br x29
+
 
 // triangle:
 // top vertex coordinates
 // xpixel   x1
 // ypixel   x2
 
-draw_food:
+triangle:
 
     mov w3, ORANGE
 

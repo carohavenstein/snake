@@ -29,8 +29,6 @@ InfLoop:
 	
 	bl draw_snake
 
-	mov x1, 250
-	mov x2, 50
 	bl draw_food
 
 

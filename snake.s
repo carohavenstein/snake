@@ -11,7 +11,7 @@
 .equ START_Y, 256
 
 // to store coordinate of top left pixel of each segment
-// x_head, y_head, x_segment1, y_segment1, x_segment2, y_segment2, ... , x_segment16, y_segment16 
+// snake_segments[30] = {x_head, y_head, x_segment1, y_segment1, x_segment2, y_segment2, ... , x_segment16, y_segment16} 
 .equ SNAKE_HEAD_ADDRESS, 0x40000
 .equ SNAKE_SIZE_ADDRESS, 0x80000
 .equ NEXT_SEGMENT, 16
