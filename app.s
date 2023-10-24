@@ -16,21 +16,18 @@ app:
 	//---------------- Main code --------------------
 	// X0 contiene la dirección base del framebuffer (NO MODIFICAR)
 
+
+	bl set_food_coord
 	bl draw_board
 	bl draw_snake_start
 
 InfLoop:
 
 	bl inputRead
-	
 	bl update_position
-	
 	bl slither_snake
-	
 	bl draw_snake
-
 	bl draw_food
-
 
 	// --- Delay loop ---
 	movz x11, 0x10, lsl #16

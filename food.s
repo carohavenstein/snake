@@ -1,17 +1,24 @@
+.global set_food_coord
 .global draw_food
 .global triangle
 
 .equ ORANGE, 0xFB80
 
-// food[30] = { x_food1, y_food1, x_food2, y_food2, ... , x_food14, y_food14 }
+
+// food[30] = { x_food0, y_food0, x_food1, y_food1, ... , x_food14, y_food14 }
 .equ FIRST_FOOD_ADDRESS, 0x300000
-.equ ACTUAL_FOOD_ADDRESS, 0x
-.NEXT_FOOD, 16
+.equ FOOD_COUNT_ADDRESS, 0x100000
+.equ NEXT_FOOD, 16
 
 draw_food:
     mov x29, x30                // save return address
 
-    mov x3, ACTUAL_FOOD_ADDRESS
+    mov x9, FOOD_COUNT_ADDRESS
+    mov x6, FIRST_FOOD_ADDRESS
+    ldur x9, [x9]                   // x9 = food_count
+    mov x11, NEXT_FOOD
+    madd x3, x9, x11, x6            // actual_food x3 = food_count * next_food + first_food_address
+
     ldur x1, [x3, X_COORD]          // get actual_food coordinates
     ldur x2, [x3, Y_COORD]
     bl triangle
@@ -59,5 +66,20 @@ triangle:
         add x13, x13, 1         // width factor + 1
         cbnz x10, height_loop	  	// Si no es la última fila, saltar		
         
+    ret
+
+
+set_food_coord:
+
+    mov x9, FIRST_FOOD_ADDRESS
+
+    mov x12, FOOD_COUNT_ADDRESS
+    mov x13, 0
+    stur x13, [x12]                 // food count starts at 0
+
+    mov x10, 60
+    stur x10, [x9, X_COORD]         // x_food0
+    stur x10, [x9, Y_COORD]         // y_food0
+
     ret
 
