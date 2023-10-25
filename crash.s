@@ -49,7 +49,11 @@ check_crash:
     and w14, w12, w13               // if 0, snake crashed own segment or board frame
     cbz w14, you_loose
     
-    // check if snake ate cheese
+    sub w14, w7, w5                 // w14 = w7 - YELLOW
+    //cbz w14, you_win
+    cbnz w14, check_done            // if not 0, snake didnt eat
+        bl clean_food
+        bl grow_snake
 
     check_done:
 
@@ -58,10 +62,3 @@ check_crash:
         
 
         
-
-
-
-
-
-
-

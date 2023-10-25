@@ -1,6 +1,7 @@
 .global set_food_coords
 .global draw_food
 .global triangle
+.global clean_food
 
 .equ YELLOW, 0xEDC5
 
@@ -21,6 +22,7 @@ draw_food:
 
     ldur x1, [x3, X_COORD]          // get actual_food coordinates
     ldur x2, [x3, Y_COORD]
+    mov w3, YELLOW
     bl triangle
 
     br x29
@@ -30,10 +32,9 @@ draw_food:
 // top vertex coordinates
 // xpixel   x1
 // ypixel   x2
-
+// color    w3
 triangle:
 
-    mov w3, YELLOW
 
     mov x12, x2                  // x12 = ypixel
     mov x8, 512
@@ -43,7 +44,7 @@ triangle:
     
     mov x13, 1               // width factor
 
-    mov x10, 15           	// height
+    mov x10, 19           	// height
     height_loop:
 
         mov x11, 1         	// width
@@ -106,4 +107,27 @@ set_food_coords:
     add x9, x9, NEXT_FOOD
 
     ret
+
+
+clean_food:
+
+    mov x28, x30                // save return address
+
+    mov x9, FOOD_COUNT_ADDRESS
+    mov x6, FIRST_FOOD_ADDRESS
+    ldur x9, [x9]                   // x9 = food_count
+    mov x11, NEXT_FOOD
+    madd x3, x9, x11, x6            // actual_food x3 = food_count * next_food + first_food_address
+
+    ldur x1, [x3, X_COORD]          // get actual_food coordinates
+    ldur x2, [x3, Y_COORD]
+    mov w3, PURPLE
+    bl triangle
+
+    mov x9, FOOD_COUNT_ADDRESS
+    ldur x10, [x9]
+    add x10, x10, 1
+    stur x10, [x9]                  // food_count += 1
+
+    br x28
 

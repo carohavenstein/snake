@@ -2,6 +2,7 @@
 .global update_position
 .global draw_snake
 .global slither_snake
+.global grow_snake
 
 .equ SNAKE_MAX_LEN, 17
 .equ SNAKE_START_LEN, 2
@@ -172,4 +173,11 @@ draw_snake:
 
     br x29
 
+
+grow_snake:
+    mov x28, x30                // save return address
+
+    
+
+    br x28
 

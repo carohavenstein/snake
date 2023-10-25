@@ -21,6 +21,7 @@ you_loose:
     mov x5, 512
     bl rectangle
 
+    // TURN RED LED ON
 
     looser_loop:
     b looser_loop
@@ -36,6 +37,8 @@ you_win:
     mov x4, 512
     mov x5, 512
     bl rectangle
+
+    // TURN GREEN LED ON
 
     winner_loop:
     b winner_loop
