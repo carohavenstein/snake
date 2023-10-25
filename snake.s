@@ -22,13 +22,12 @@
 .equ SLITHER, 19
 .equ GREEN, 0x2143
 
-// pixelx head x1
-// pixely head x2
+
 set_snake_start:
 
     mov x7, SNAKE_START_LEN
     mov x8, SNAKE_SIZE_ADDRESS
-    stur x7, [x8]                           // (sanke size) x7 = 2 (snake start len)
+    stur x7, [x8]                           // (snake size) x7 = 2 (snake start len)
  
     mov x6, SNAKE_HEAD_ADDRESS                
 
@@ -51,7 +50,6 @@ set_snake_start:
 .equ DOWN_ARROW, 0x20000
 .equ LEFT_ARROW, 0x40000
 
-// pressed arrow x22
 update_position:
 
     mov x29, x30                            // save return address
@@ -67,7 +65,6 @@ update_position:
         cmp x22, UP_ARROW
         b.ne control_right
         sub x11, x11, SLITHER        // move up, sub in y axis -> x11 = next y_head
-        //bl check_crash_down
 
     control_right:
         cmp x22, RIGHT_ARROW

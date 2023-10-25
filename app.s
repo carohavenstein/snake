@@ -25,6 +25,7 @@ InfLoop:
 
 	bl inputRead
 	bl update_position
+	bl check_crash
 	bl slither_snake
 	bl draw_snake
 	bl draw_food

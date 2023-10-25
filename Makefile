@@ -15,8 +15,8 @@ clean :
 	rm -f *.img
 	rm -f memory_map.txt
 
-main.o : main.s app.s board.s food.s gpio.s rectangle.s snake.s 
-	$(ARMGNU)-as $(AOPS) main.s app.s board.s food.s gpio.s rectangle.s snake.s -o main.o
+main.o : main.s app.s board.s crash.s food.s gpio.s rectangle.s screen.s snake.s 
+	$(ARMGNU)-as $(AOPS) main.s app.s board.s crash.s food.s gpio.s rectangle.s screen.s snake.s -o main.o
 
 
 kernel.img : memmap main.o
