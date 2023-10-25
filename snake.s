@@ -1,4 +1,4 @@
-.global draw_snake_start
+.global set_snake_start
 .global update_position
 .global draw_snake
 .global slither_snake
@@ -24,13 +24,12 @@
 
 // pixelx head x1
 // pixely head x2
-draw_snake_start:
+set_snake_start:
 
     mov x7, SNAKE_START_LEN
     mov x8, SNAKE_SIZE_ADDRESS
-    stur x7, [x8]                           // x7 = 2 snake size
-
-    mov x29, x30                            // save return address 
+    stur x7, [x8]                           // (sanke size) x7 = 2 (snake start len)
+ 
     mov x6, SNAKE_HEAD_ADDRESS                
 
     mov x1, START_X                             // xpixel   x1
@@ -38,18 +37,12 @@ draw_snake_start:
     mov x2, START_Y                             // ypixel   x2
     stur x2, [x6, Y_COORD]                      // save y_head
 
-    mov w3, GREEN                               // color    w3
-    mov x4, SEGMENT_HEIGHT_WIDTH                // height   x4
-    mov x5, SEGMENT_HEIGHT_WIDTH                // widht    x5
-    bl rectangle                                // draw head
-
     add x6, x6, NEXT_SEGMENT                    // segment 1
     stur x1, [x6, X_COORD]                      // save x_segment1
     add x2, x2, SEGMENT_HEIGHT_WIDTH
     stur x2, [x6, Y_COORD]                      // save y_segment1
-    bl rectangle                                // draw first segment
-
-    br x29
+    
+    ret
 
 
 
@@ -164,7 +157,6 @@ draw_snake:
     ldur x7, [x7]                           // x7 = snake size
     
     mov w3, GREEN                           // color    w3
-    //mov w3, 0xF821
     mov x4, SEGMENT_HEIGHT_WIDTH            // height   x4
     mov x5, SEGMENT_HEIGHT_WIDTH            // widht    x5
 

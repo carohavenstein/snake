@@ -17,9 +17,9 @@ app:
 	// X0 contiene la dirección base del framebuffer (NO MODIFICAR)
 
 
-	bl set_food_coord
+	bl set_food_coords
 	bl draw_board
-	bl draw_snake_start
+	bl set_snake_start
 
 InfLoop:
 

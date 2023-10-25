@@ -1,4 +1,4 @@
-.global set_food_coord
+.global set_food_coords
 .global draw_food
 .global triangle
 
@@ -69,7 +69,7 @@ triangle:
     ret
 
 
-set_food_coord:
+set_food_coords:
 
     mov x9, FIRST_FOOD_ADDRESS
 
@@ -80,6 +80,30 @@ set_food_coord:
     mov x10, 60
     stur x10, [x9, X_COORD]         // x_food0
     stur x10, [x9, Y_COORD]         // y_food0
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 90
+    stur x10, [x9, X_COORD]         // x_food1
+    stur x10, [x9, Y_COORD]         // y_food1
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 180
+    mov x11, 90
+    stur x10, [x9, X_COORD]         // x_food2
+    stur x11, [x9, Y_COORD]         // y_food2
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 180
+    mov x11, 90
+    stur x10, [x9, X_COORD]         // x_food3
+    stur x11, [x9, Y_COORD]         // y_food3
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 180
+    mov x11, 90
+    stur x10, [x9, X_COORD]         // x_food4
+    stur x11, [x9, Y_COORD]         // y_food4
+    add x9, x9, NEXT_FOOD
 
     ret
 
