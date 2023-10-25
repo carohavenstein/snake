@@ -15,9 +15,9 @@ you_loose:
     bl rectangle
 
     mov x1, 0
-    mov x2, 258
+    mov x2, 256
     mov w3, WHITE
-    mov x4, 4
+    mov x4, 2
     mov x5, 512
     bl rectangle
 

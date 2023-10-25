@@ -9,45 +9,39 @@ check_crash:
     ldur x2, [x6, Y_COORD]                 // x2 = next_y_head
 
     mov x8, 512
-    //madd x9, x2, x8, x1        // x9 = (y * 512) + x
-    //lsl x9, x9, 1                // x9 * 2
-    //add x9, x9, x0            // dir_pixel = inicio + x9
-
     mov w3, GREEN
-    mov w4, DARK_BLUE
-    mov w5, ORANGE
+    mov w4, BLUE
+    mov w5, YELLOW
 
-    mov x1, LAST_PRESSED_ADDRESS
-    ldur x22, [x1]                    // x22 = last pressed key
+    mov x15, LAST_PRESSED_ADDRESS
+    ldur x22, [x15]                     // x22 = last pressed key
 
-    check_crash_up:
+    check_vertical_crash:
+
         cmp x22, UP_ARROW
-        b.ne check_crash_right
-        add x1, x1, 10                  // center_next_x_head = next_x_head + 10
-        
-        madd x9, x2, x8, x1        // x9 = (y * 512) + x
-        lsl x9, x9, 1                // x9 * 2
-        add x9, x9, x0            // dir_pixel = inicio + x9
-
-        ldurh w7, [x9]                 // w7 = color of center_next_x_head pixel
-        sub w12, w7, w3                // w12 = w7 - GREEN
-        sub w13, w7, w4                // w13 = w7 - DARK_BLUE       
-        and w14, w12, w13              // if 0, snake crashed own segment or board frame
-        cbz w14, you_loose 
-
-    check_crash_right:
-        cmp x22, RIGHT_ARROW
-        b.ne check_crash_down
-        
-
-    check_crash_down:
+        b.eq get_coord
         cmp x22, DOWN_ARROW
-        b.ne check_crash_left
+        b.ne check_horizontal_crash
+        
+        get_coord:
+        add x1, x1, 10                  // center_next_x_head = next_x_head + 10
+        madd x9, x2, x8, x1             // x9 = (y * 512) + x
+        lsl x9, x9, 1                   // x9 * 2
+        add x9, x9, x0                  // dir_pixel = inicio + x9
+
+        ldurh w7, [x9]                  // w7 = color of center_next_x_head pixel
+        sub w12, w7, w3                 // w12 = w7 - GREEN
+        sub w13, w7, w4                 // w13 = w7 - BLUE       
+        and w14, w12, w13               // if 0, snake crashed own segment or board frame
+        cbz w14, you_loose
+
+        // check if snake ate cheese
+    
+    check_horizontal_crash:
+        cmp x22, RIGHT_ARROW
+        
         
 
-    check_crash_left:
-        cmp x22, LEFT_ARROW
-        b.ne crash_control_done
         
 
     crash_control_done:

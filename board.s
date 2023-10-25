@@ -8,13 +8,13 @@
 .equ LATERAL_FRAMES_HEIGHT, 512
 .equ LATERAL_FRAMES_WIDTH, 28
 
-.equ DARK_BLUE, 0x01AB
+.equ BLUE, 0x01AB
 .equ PURPLE, 0x398A
 
 draw_board:
     mov x29, x30                            // save return address
 
-	mov w3, DARK_BLUE		                // color
+	mov w3, BLUE		                // color
 
 						                    // top frame
 	mov x1, 0			                    // xpixel

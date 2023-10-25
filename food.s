@@ -2,7 +2,7 @@
 .global draw_food
 .global triangle
 
-.equ ORANGE, 0xFB80
+.equ YELLOW, 0xEDC5
 
 
 // food[30] = { x_food0, y_food0, x_food1, y_food1, ... , x_food14, y_food14 }
@@ -33,7 +33,7 @@ draw_food:
 
 triangle:
 
-    mov w3, ORANGE
+    mov w3, YELLOW
 
     mov x12, x2                  // x12 = ypixel
     mov x8, 512
