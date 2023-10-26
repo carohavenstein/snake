@@ -177,7 +177,19 @@ draw_snake:
 grow_snake:
     mov x28, x30                // save return address
 
-    
+    mov x6, SNAKE_HEAD_ADDRESS        
+    mov x7, SNAKE_SIZE_ADDRESS
+    ldur x7, [x7]                       // x7 = snake size
+
+    sub x7, x7, 1                       // x7 = snake size -1 -> (last segment index)
+    ldur x1, [x7, X_COORD]              // x1 = x_segment[n] (last segment)
+    ldur x2, [x7, Y_COORD]              // x2 = y_segment[n] (last segment)
+
+    sub x7, x7, 1                       // x7 = x7 - 1 -> (second-last segment)
+    ldur x3, [x7, X_COORD]              // x1 = x_segment[n] (last segment)
+    ldur x4, [x7, Y_COORD]              // x2 = y_segment[n] (last segment)
+
+
 
     br x28
 

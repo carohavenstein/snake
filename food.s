@@ -78,30 +78,30 @@ set_food_coords:
     mov x13, 0
     stur x13, [x12]                 // food count starts at 0
 
-    mov x10, 60
+    mov x10, 90
     stur x10, [x9, X_COORD]         // x_food0
     stur x10, [x9, Y_COORD]         // y_food0
     add x9, x9, NEXT_FOOD
 
-    mov x10, 90
+    mov x10, 400
     stur x10, [x9, X_COORD]         // x_food1
     stur x10, [x9, Y_COORD]         // y_food1
     add x9, x9, NEXT_FOOD
 
-    mov x10, 180
-    mov x11, 90
+    mov x10, 256
+    mov x11, 256
     stur x10, [x9, X_COORD]         // x_food2
     stur x11, [x9, Y_COORD]         // y_food2
     add x9, x9, NEXT_FOOD
 
     mov x10, 180
-    mov x11, 90
+    mov x11, 300
     stur x10, [x9, X_COORD]         // x_food3
     stur x11, [x9, Y_COORD]         // y_food3
     add x9, x9, NEXT_FOOD
 
-    mov x10, 180
-    mov x11, 90
+    mov x10, 300
+    mov x11, 180
     stur x10, [x9, X_COORD]         // x_food4
     stur x11, [x9, Y_COORD]         // y_food4
     add x9, x9, NEXT_FOOD
@@ -121,7 +121,7 @@ clean_food:
 
     ldur x1, [x3, X_COORD]          // get actual_food coordinates
     ldur x2, [x3, Y_COORD]
-    mov w3, PURPLE
+    mov w3, PURPLE                  // delete food from board
     bl triangle
 
     mov x9, FOOD_COUNT_ADDRESS
