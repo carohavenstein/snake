@@ -111,7 +111,7 @@ set_food_coords:
 
 clean_food:
 
-    mov x28, x30                // save return address
+    mov x28, x30                    // save return address
 
     mov x9, FOOD_COUNT_ADDRESS
     mov x6, FIRST_FOOD_ADDRESS

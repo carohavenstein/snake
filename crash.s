@@ -25,7 +25,6 @@ check_crash:
         set_x_coord:
         add x1, x1, 10                  // center_next_x_head = next_x_head + 10
         b get_pixel_coord
-
     
     check_horizontal_crash:
         cmp x22, RIGHT_ARROW
@@ -35,7 +34,6 @@ check_crash:
 
         set_y_coord:
         add x2, x2, 10                  // center_next_y_head = next_y_head + 10
-    
 
     get_pixel_coord:
     mov x8, 512
@@ -57,8 +55,6 @@ check_crash:
 
     check_done:
 
-
     br x29
         
-
-        
+  

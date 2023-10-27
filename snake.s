@@ -12,7 +12,7 @@
 .equ START_Y, 256
 
 // to store coordinate of top left pixel of each segment
-// snake_segments[30] = {x_head, y_head, x_segment1, y_segment1, x_segment2, y_segment2, ... , x_segment16, y_segment16} 
+// snake[30] = {x_head, y_head, x_segment1, y_segment1, x_segment2, y_segment2, ... , x_segment16, y_segment16} 
 .equ SNAKE_HEAD_ADDRESS, 0x40000
 .equ SNAKE_SIZE_ADDRESS, 0x80000
 .equ NEXT_SEGMENT, 16
@@ -102,7 +102,7 @@ slither_snake:
     sub x9, x8, 1                      // x9 = snake size - 1
     mov x12, NEXT_SEGMENT
     mov x6, SNAKE_HEAD_ADDRESS
-    madd x13, x9, x12, x6           // x13 = segment[i-1] address (last segment)
+    madd x13, x9, x12, x6           // x13 = snake[i-1] address (last segment)
 
     ldur x1, [x13, X_COORD]         // xpixel   x1
     ldur x2, [x13, Y_COORD]         // ypixel   x2
@@ -122,18 +122,18 @@ slither_snake:
     
     mov x12, NEXT_SEGMENT
     mov x6, SNAKE_HEAD_ADDRESS
-    madd x13, x9, x12, x6           // x13 = segment[i-1] address (last segment)
-    madd x14, x8, x12, x6           // x14 = segment[i] address
+    madd x13, x9, x12, x6           // x13 = snake[i-1] address (last segment)
+    madd x14, x8, x12, x6           // x14 = snake[i] address
 
     slither_loop:
                                         
-        ldur x1, [x13, X_COORD]         // x1 = x_segment[i-1]
-        ldur x2, [x13, Y_COORD]         // x2 = y_segment[i-1]
+        ldur x1, [x13, X_COORD]         // x1 = snake[x_ i-1]
+        ldur x2, [x13, Y_COORD]         // x2 = snake[y_ i-1]
         sub x13, x13, NEXT_SEGMENT      // [i-1]address --
         sub x9, x9, 1                   // (i-1) --
 
-        stur x1, [x14, X_COORD]         // x_segment[i] = x_segment[i-1]
-        stur x2, [x14, Y_COORD]         // y_segment[i] = y_segment[i-1]
+        stur x1, [x14, X_COORD]         // snake[x_ i] = snake[x_ i-1]
+        stur x2, [x14, Y_COORD]         // snake[y_ i] = snake[y_ i-1]
         sub x14, x14, NEXT_SEGMENT      // [i] address --
         sub x8, x8, 1                   // i --
         
@@ -162,9 +162,9 @@ draw_snake:
 
     drawing_loop:
 
-        ldur x1, [x6, X_COORD]     // x1 = x_segment[i]
-        ldur x2, [x6, Y_COORD]     // x2 = y_segment[i]
-        bl rectangle               // draw segment[i]
+        ldur x1, [x6, X_COORD]     // x1 = snake[x_ i]
+        ldur x2, [x6, Y_COORD]     // x2 = snake[y_ i]
+        bl rectangle               // draw snake[i]
         
         add x6, x6, NEXT_SEGMENT   // next segment address
         add x13, x13, 1
@@ -177,19 +177,33 @@ draw_snake:
 grow_snake:
     mov x28, x30                // save return address
 
+    mov x5, NEXT_SEGMENT
     mov x6, SNAKE_HEAD_ADDRESS        
-    mov x7, SNAKE_SIZE_ADDRESS
-    ldur x7, [x7]                       // x7 = snake size
+    mov x9, SNAKE_SIZE_ADDRESS
+    ldur x7, [x9]                       // x7 = snake size
 
-    sub x7, x7, 1                       // x7 = snake size -1 -> (last segment index)
-    ldur x1, [x7, X_COORD]              // x1 = x_segment[n] (last segment)
-    ldur x2, [x7, Y_COORD]              // x2 = y_segment[n] (last segment)
+    sub x8, x7, 1                       // x8 = snake size - 1 -> (last segment index)
+    madd x15, x8, x5, x6                // x15 = snake[last_segment] address
+    ldur x1, [x15, X_COORD]             // x1 = snake[x_last_segment]
+    ldur x2, [x15, Y_COORD]             // x2 = snake[y_last_segment]
 
-    sub x7, x7, 1                       // x7 = x7 - 1 -> (second-last segment)
-    ldur x3, [x7, X_COORD]              // x1 = x_segment[n] (last segment)
-    ldur x4, [x7, Y_COORD]              // x2 = y_segment[n] (last segment)
+    sub x8, x8, 1                       // x8 = x7 - 1 -> (second-last segment)
+    madd x15, x8, x5, x6                // x15 = snake[second_last_segment] address
+    ldur x3, [x15, X_COORD]             // x3 = snake[x_second_last_segment]
+    ldur x4, [x15, Y_COORD]             // x4 = snake[y_second_last_segment]
 
+    sub x10, x3, x1                     // x10 = (dx) -> negative when snake slithers rightwards
+    sub x11, x4, x2                     // x11 = (dy) -> negative when snake slithers upwards
 
+    sub x13, x1, x10                    // x13 = x_last_segment - (+- dx) -> x_new_segment
+    sub x14, x2, x11                    // x14 = y_last_segment - (+- dy) -> y_new_segment
+
+    madd x15, x7, x5, x6                // x15 = snake[new_segment] address
+    stur x13, [x15, X_COORD]            // snake[size] = x_new_segment
+    stur x14, [x15, Y_COORD]            // snake[size] = y_new_segment
+
+    add x7, x7, 1                       // snake size += 1
+    stur x7, [x9]                       // save new snake size
 
     br x28
 
