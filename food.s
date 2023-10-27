@@ -12,6 +12,7 @@
 .equ NEXT_FOOD, 16
 
 draw_food:
+
     mov x29, x30                // save return address
 
     mov x9, FOOD_COUNT_ADDRESS
@@ -44,7 +45,7 @@ triangle:
     
     mov x13, 1               // width factor
 
-    mov x10, 19           	// height
+    mov x10, 26           	// height
     height_loop:
 
         mov x11, 1         	// width
@@ -70,45 +71,6 @@ triangle:
     ret
 
 
-set_food_coords:
-
-    mov x9, FIRST_FOOD_ADDRESS
-
-    mov x12, FOOD_COUNT_ADDRESS
-    mov x13, 0
-    stur x13, [x12]                 // food count starts at 0
-
-    mov x10, 90
-    stur x10, [x9, X_COORD]         // x_food0
-    stur x10, [x9, Y_COORD]         // y_food0
-    add x9, x9, NEXT_FOOD
-
-    mov x10, 400
-    stur x10, [x9, X_COORD]         // x_food1
-    stur x10, [x9, Y_COORD]         // y_food1
-    add x9, x9, NEXT_FOOD
-
-    mov x10, 256
-    mov x11, 256
-    stur x10, [x9, X_COORD]         // x_food2
-    stur x11, [x9, Y_COORD]         // y_food2
-    add x9, x9, NEXT_FOOD
-
-    mov x10, 180
-    mov x11, 300
-    stur x10, [x9, X_COORD]         // x_food3
-    stur x11, [x9, Y_COORD]         // y_food3
-    add x9, x9, NEXT_FOOD
-
-    mov x10, 300
-    mov x11, 180
-    stur x10, [x9, X_COORD]         // x_food4
-    stur x11, [x9, Y_COORD]         // y_food4
-    add x9, x9, NEXT_FOOD
-
-    ret
-
-
 clean_food:
 
     mov x28, x30                    // save return address
@@ -130,4 +92,101 @@ clean_food:
     stur x10, [x9]                  // food_count += 1
 
     br x28
+
+
+set_food_coords:
+
+    mov x9, FIRST_FOOD_ADDRESS
+
+    mov x12, FOOD_COUNT_ADDRESS
+    mov x13, 0
+    stur x13, [x12]                 // food count starts at 0
+
+    mov x10, 90
+    stur x10, [x9, X_COORD]         // x_food0
+    stur x10, [x9, Y_COORD]         // y_food0
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 400
+    stur x10, [x9, X_COORD]         // x_food1
+    stur x10, [x9, Y_COORD]         // y_food1
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 256
+    stur x10, [x9, X_COORD]         // x_food2
+    stur x10, [x9, Y_COORD]         // y_food2
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 180
+    mov x11, 300
+    stur x10, [x9, X_COORD]         // x_food3
+    stur x11, [x9, Y_COORD]         // y_food3
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 300
+    mov x11, 180
+    stur x10, [x9, X_COORD]         // x_food4
+    stur x11, [x9, Y_COORD]         // y_food4
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 100
+    mov x11, 256
+    stur x10, [x9, X_COORD]         // x_food5
+    stur x11, [x9, Y_COORD]         // y_food5
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 400
+    mov x11, 260
+    stur x10, [x9, X_COORD]         // x_food6
+    stur x11, [x9, Y_COORD]         // y_food6
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 230
+    mov x11, 180
+    stur x10, [x9, X_COORD]         // x_food7
+    stur x11, [x9, Y_COORD]         // y_food7
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 300
+    mov x11, 256
+    stur x10, [x9, X_COORD]         // x_food8
+    stur x11, [x9, Y_COORD]         // y_food8
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 280
+    mov x11, 300
+    stur x10, [x9, X_COORD]         // x_food9
+    stur x11, [x9, Y_COORD]         // y_food9
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 100
+    mov x11, 400
+    stur x10, [x9, X_COORD]         // x_food10
+    stur x11, [x9, Y_COORD]         // y_food10
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 280
+    mov x11, 230
+    stur x10, [x9, X_COORD]         // x_food11
+    stur x11, [x9, Y_COORD]         // y_food11
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 256
+    mov x11, 400
+    stur x10, [x9, X_COORD]         // x_food12
+    stur x11, [x9, Y_COORD]         // y_food12
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 256
+    mov x11, 100
+    stur x10, [x9, X_COORD]         // x_food13
+    stur x11, [x9, Y_COORD]         // y_food13
+    add x9, x9, NEXT_FOOD
+
+    mov x10, 200
+    mov x11, 350
+    stur x10, [x9, X_COORD]         // x_food14
+    stur x11, [x9, Y_COORD]         // y_food14
+
+    ret
 

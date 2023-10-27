@@ -21,7 +21,7 @@ app:
 	bl draw_board
 	bl set_snake_start
 
-InfLoop:
+game_loop:
 
 	bl inputRead
 	bl update_position
@@ -36,7 +36,6 @@ InfLoop:
 	sub x11,x11,#1
 	cbnz x11, delay1
 	// ------------------
-
-
-	b InfLoop
+	
+	b game_loop
 	

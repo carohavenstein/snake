@@ -203,6 +203,9 @@ grow_snake:
     stur x14, [x15, Y_COORD]            // snake[size] = y_new_segment
 
     add x7, x7, 1                       // snake size += 1
+    cmp x7, SNAKE_MAX_LEN
+    beq you_win
+    
     stur x7, [x9]                       // save new snake size
 
     br x28
