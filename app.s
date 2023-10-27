@@ -16,6 +16,9 @@ app:
 	//---------------- Main code --------------------
 	// X0 contiene la dirección base del framebuffer (NO MODIFICAR)
 
+	mov x1, LAST_PRESSED_ADDRESS
+	mov x2, 0
+	stur x2, [x1]
 
 	bl set_food_coords
 	bl draw_board

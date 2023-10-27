@@ -16,56 +16,31 @@ check_crash:
     mov x15, LAST_PRESSED_ADDRESS
     ldur x22, [x15]                     // x22 = last pressed key
 
-    check_crash_up:
 
-        cmp x22, UP_ARROW
-        b.ne check_crash_down
+    cbz x22, check_done             // if x22 == 0, no key was pressed yet
 
-        mov x16, SEGMENT_HEIGHT_WIDTH
+    mov x16, SEGMENT_HEIGHT_WIDTH
 
-        up_outer_loop:
-            mov x15, SEGMENT_HEIGHT_WIDTH
-            mov x10, x1
+    up_outer_loop:
+        mov x15, SEGMENT_HEIGHT_WIDTH
+        mov x10, x1
 
-            up_inner_loop:
-                b check_pixel
-                add x10, x1, 1
+        up_inner_loop:
+            b check_pixel
+            add x10, x1, 1
 
-                sub x15, x15, 1
-                cbnz x15, up_inner_loop
+            sub x15, x15, 1
+            cbnz x15, up_inner_loop
 
-            add x11, x2, 1
-            sub x16, x16, 1
-            cbnz x16, up_outer_loop
+        add x11, x2, 1
+        sub x16, x16, 1
+        cbnz x16, up_outer_loop
 
-        b check_done                            // no crash in snake SNAKE_NEXT_POS pixels
-    
-    check_crash_down:
-        cmp x22, DOWN_ARROW
-        b.ne check_crash_right
-
-
-    check_crash_right:
-
-    check_crash_left:
-
-
-    //check_horizontal_crash:
-    //    cmp x22, RIGHT_ARROW
-    //    b.eq y_loop
-    //    cmp x22, LEFT_ARROW
-    //    b.ne check_done
-
-    //    y_loop:
-    //        b check_pixel
-    //        add x2, x2, 1
-    //        cmp x2, SEGMENT_HEIGHT_WIDTH
-    //        bne y_loop
     
     check_done:
 
-
     br x29
+
 
 
 // x1 = x_coord pixel
