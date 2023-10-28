@@ -18,7 +18,7 @@ app:
 
 	mov x1, LAST_PRESSED_ADDRESS
 	mov x2, 0
-	stur x2, [x1]
+	stur x2, [x1]						// last_pressed_key = 0 (so snake stays still until first key press)
 
 	bl set_food_coords
 	bl draw_board

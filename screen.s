@@ -19,7 +19,7 @@ you_loose:
     mov w3, WHITE
     mov x4, 2
     mov x5, 512
-    bl rectangle
+    bl rectangle        // flatline
 
     // TURN RED LED ON
 

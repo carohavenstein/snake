@@ -14,7 +14,7 @@
 draw_board:
     mov x29, x30                            // save return address
 
-	mov w3, BLUE		                // color
+	mov w3, BLUE		                	// color
 
 						                    // top frame
 	mov x1, 0			                    // xpixel

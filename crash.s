@@ -16,25 +16,24 @@ check_crash:
     mov x15, LAST_PRESSED_ADDRESS
     ldur x22, [x15]                     // x22 = last pressed key
 
-
     cbz x22, check_done             // if x22 == 0, no key was pressed yet
 
     mov x16, SEGMENT_HEIGHT_WIDTH
 
-    up_outer_loop:
+    crash_outer_loop:
         mov x15, SEGMENT_HEIGHT_WIDTH
         mov x10, x1
 
-        up_inner_loop:
-            b check_pixel
+        crash_inner_loop:
+            bl check_pixel
             add x10, x1, 1
 
             sub x15, x15, 1
-            cbnz x15, up_inner_loop
+            cbnz x15, crash_inner_loop
 
         add x11, x2, 1
         sub x16, x16, 1
-        cbnz x16, up_outer_loop
+        cbnz x16, crash_outer_loop
 
     
     check_done:
@@ -51,7 +50,7 @@ check_crash:
 
 check_pixel:
 
-    mov x26, x30
+    mov x28, x30
     
     mov x8, 512
     madd x9, x2, x8, x1
@@ -64,14 +63,14 @@ check_pixel:
     and w14, w12, w13               // if 0, snake crashed own segment or board frame
     cbz w14, you_loose
     
-    sub w14, w7, w5                       // w14 = w7 - YELLOW
-    cbnz w14, pixel_check_done            // if not 0, snake didnt eat
+    cmp w7, w5                          //  w7 vs YELLOW
+    bne pixel_check_done                // snake didnt eat
         bl clean_food
         bl grow_snake
-        b check_done			  // if snake ate, dont keep checking pixels
+        //b check_done			  // if snake ate, stop checking pixels
     
     pixel_check_done:
 
-    br x26
+    br x28
 
     
