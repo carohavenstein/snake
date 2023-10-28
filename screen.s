@@ -1,4 +1,4 @@
-.global you_loose
+.global you_lose
 .global you_win
 .global write
 
@@ -6,7 +6,7 @@
 .equ WHITE, 0xFFFF
 .equ LIGHT_BLUE, 0x04BF
 
-you_loose:
+you_lose:
 
     // TURN RED LED ON
     
@@ -24,8 +24,8 @@ you_loose:
     mov x5, 512
     bl rectangle        // flatline
 
-    looser_loop:
-    b looser_loop
+    loser_loop:
+    b loser_loop
 
     ret
 
