@@ -47,7 +47,6 @@ set_snake_start:
     ret
 
 
-
 .equ UP_ARROW, 0x4000
 .equ RIGHT_ARROW, 0x8000
 .equ DOWN_ARROW, 0x20000
@@ -90,9 +89,7 @@ update_position:
     stur x10, [x6, X_COORD]             // snake_next_pos[0] = next_x_head
     stur x11, [x6, Y_COORD]             // snake_next_pos[1] = next_y_head
 
-
     br x29
-    
 
 
 slither_snake:
@@ -144,7 +141,6 @@ slither_snake:
     stur x11, [x6, Y_COORD]             // y_head = x11
 
     br x29
-
 
 
 draw_snake:

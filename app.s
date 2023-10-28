@@ -20,6 +20,8 @@ app:
 	mov x2, 0
 	stur x2, [x1]						// last_pressed_key = 0 (so snake stays still until first key press)
 
+	bl you_win
+
 	bl set_food_coords
 	bl draw_board
 	bl set_snake_start
