@@ -7,8 +7,9 @@
 .equ LIGHT_BLUE, 0x04BF
 
 you_lose:
-
-    // TURN RED LED ON
+    
+    mov x1, 512
+	stur x1, [x20]      // TURN RED LED ON
     
     mov x1, 0
     mov x2, 0
@@ -32,7 +33,8 @@ you_lose:
 
 you_win:
 
-    // TURN GREEN LED ON
+    mov x1, 64
+	stur x1, [x20]						// TURN GREEN LED ON
     
     mov x1, 0
     mov x2, 0
